@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import "./App.css";
+import { buttons } from "./button_list";
+// eee
+const App: React.FC = () => {
+	const [screenCalc, setScreenCalc] = React.useState<string>("");
+	const [mainScreen, setMainScreen] = React.useState("");
+	function calcul(entry: string) {
+		if (/\d/.test(entry)) {
+			if (!/\d/.test(screenCalc)) {
+				setMainScreen(mainScreen + screenCalc);
+				setScreenCalc(entry);
+			} else {
+				setScreenCalc(screenCalc + entry);
+			}
+		} else if (entry === "=") {
+			setScreenCalc("");
+		} else {
+			setMainScreen(mainScreen + screenCalc);
+			setScreenCalc(entry);
+		}
+	}
+	return (
+		<>
+			<div className="calculator__screen">
+				<p className="calculator__screen--first">{mainScreen}</p>
+				<p className="calculator__screen--second">{screenCalc}</p>
+			</div>
+			<div className="calculator__pad">
+				{buttons.map((elem) => {
+					return (
+						<div
+							key={elem}
+							onClick={() => calcul(elem)}
+							className="calculator__pad--button"
+						>
+							{elem}
+						</div>
+					);
+				})}
+			</div>
+		</>
+	);
+};
 
 export default App;
