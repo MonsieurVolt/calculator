@@ -1,41 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "./App.css";
 import { buttons } from "./button_list";
-// eee
+import { giveResult } from "./give_result";
+// main funtion
 const App: React.FC = () => {
 	const [screenCalc, setScreenCalc] = React.useState<string>("");
 	const [mainScreen, setMainScreen] = React.useState("");
-	function calcul(entry: string) {
-		if (/\d/.test(entry)) {
-			if (!/\d/.test(screenCalc)) {
-				setMainScreen(mainScreen + screenCalc);
-				setScreenCalc(entry);
-			} else {
-				setScreenCalc(screenCalc + entry);
+	// add the event listener for entree key to give the result
+	useEffect(() => {
+		window.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") {
+				giveResult("1-9+9*8-9");
 			}
-		} else if (entry === "=") {
+		});
+	});
+	function handleScreenCalc(elem: string) {
+		let newLetter = elem[elem.length - 1];
+		if (/\d/.test(newLetter) || /^\d+\.\d*$/.test(elem)) {
+			setScreenCalc(elem);
+		} else if (newLetter === "a") {
 			setScreenCalc("");
-		} else {
-			setMainScreen(mainScreen + screenCalc);
-			setScreenCalc(entry);
+			setMainScreen("");
+		} else if (/\+|-|\*|\//.test(newLetter)) {
+		} else if (elem.length === 0) {
+			setScreenCalc("");
 		}
 	}
 	return (
 		<>
 			<div className="calculator__screen">
-				<p className="calculator__screen--first">{mainScreen}</p>
-				<p className="calculator__screen--second">{screenCalc}</p>
+				<input className="calculator__screen--first" value={mainScreen} />
+
+				<input
+					className="calculator__screen--second"
+					value={screenCalc}
+					onChange={(e) => handleScreenCalc(e.target.value)}
+				/>
 			</div>
 			<div className="calculator__pad">
-				{buttons.map((elem) => {
+				{buttons.map((elem: Array<string>) => {
 					return (
 						<div
-							key={elem}
-							onClick={() => calcul(elem)}
+							key={elem[1]}
+							onClick={() => handleScreenCalc(screenCalc + elem[1])}
 							className="calculator__pad--button"
 						>
-							{elem}
+							{elem[0]}
 						</div>
 					);
 				})}
