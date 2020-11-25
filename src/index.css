@@ -3,10 +3,17 @@
 	margin: 0;
 	font-family: sans-serif;
 	box-sizing: border-box;
+	font-size: 100%;
 }
 body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
+	background-color: black;
+}
+@media screen and (max-width: 599px) {
+	* {
+		font-size: 90%;
+	}
 }

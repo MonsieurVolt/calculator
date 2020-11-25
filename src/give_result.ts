@@ -21,6 +21,5 @@ export function giveResult(a: string): number {
 				: (result -= parseFloat(list[index2]));
 		}
 	}
-	console.log(result);
 	return result;
 }
